@@ -1,0 +1,73 @@
+<%- include("../partials/head", {tituloWeb: 'Productos' }) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('../partials/custom-header') %>
+
+<script src="/js/msgs.js" defer></script>
+
+<!-- mensajes exitoso -->
+<% if (successMessage && successMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-success">
+        <p><%= successMessage[0] %></p>
+    </div>
+<% } %>
+
+<!-- mensajes error -->
+<% if (errorsMessage && errorsMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-error">
+        <p><%= errorsMessage[0] %></p>
+    </div>
+<% } %>
+
+<!-- barra de busqueda -->
+<div class="barra-busqueda">
+    <input class="barra-busqueda__input" type="text" placeholder="">
+    <button class="barra-busqueda__boton">
+        <a href="#"><img src="../icons/icono-lupa.png" alt="busqueda"></a>
+    </button>
+</div>
+<!-- titulo de categoria escogida -->
+<div class="titulo-categoria">
+    <div class="titulo-categoria__decoracion"></div>
+    <h1 class="titulo-categoria__texto"><%= productos.length > 0 & productos.length < 8 ? productos[0].category.toUpperCase() : 'PRODUCTOS' %></h1>
+    <div class="titulo-categoria__decoracion"></div>
+</div>
+
+<main class="container-products">
+    <!-- barra categorias -->
+    <nav class="barra-categorias">
+        <a class="barra-categorias__boton <%= isTodosActive ? 'categoria-active' : '' %>" href="/productos/todos">
+            <img src="../icons/barra_navegacion_categorias/cuatro-cuadrados.png" alt="">
+        </a>
+
+        <% categories.forEach(function(category) { %>
+            <a class="barra-categorias__boton <%= selectedCategory === category.category ? 'categoria-active' : '' %>" href="/productos/<%=category.category%>">
+                <img src="<%=category.icono%>" alt="">
+            </a>
+        <% }); %>
+    </nav>
+
+    <!-- Productos -->
+    <div class="contenedor-productos">
+        <% productos.forEach(function(product) { %>
+        <div class="producto" category="hamburguesas">
+            <img class="producto__img" src="<%=product.cover%>" alt="<%=product.name%>">
+            <h4 class="producto__nombre"><%=product.name%></h4>
+            <p class="producto__descrip"><%=product.description%></p>
+            <div class="producto__añadir">
+                <div>
+                    <b class="producto__añadir__precio-texto">Precio:</b>
+                    <b class="producto__añadir__precio-valor">$ <%=product.precio%></b>
+                </div>
+                <button class="producto__añadir__boton"><a href="/agregar/<%= product._id %>">Añadir</a></button>
+            </div>
+        </div>
+        <% }); %>
+    </div>
+</main>        
+
+<!-- Footer personalizado -->
+<%- include('../partials/footer') %>
+
+<!-- Footer -->
+<%- include('../partials/custom-footer') %>

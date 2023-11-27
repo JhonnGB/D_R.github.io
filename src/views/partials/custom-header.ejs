@@ -1,0 +1,49 @@
+<header class="header">
+  <div class="header__logo-empresa">
+    <a href="/nosotros">
+      <img src="../icons/logoempresa.png" alt="Logo empresa">
+    </a>
+  </div>
+  <div>
+    <h1 class="header__nombre-empresa">DELICIAS RÁPIDAS</h1>
+
+    <nav class="header__nav">
+      <a class="header__ruta header-active" href="/">INICIO</a>
+      <a class="header__ruta" href="/#seccionMenu" onclick="scrollToSection('seccionMenu'); return false;">MENÚ</a>
+      <a class="header__ruta" href="/combos">COMBOS</a>
+      <a class="header__ruta" href="/nosotros">CONOCENOS</a>
+      <a class="header__ruta" href="/estamosAqui">
+        ESTAMOS AQUÍ
+        <img class="header__icono-ubicacion" src="../icons/ubicacion.png" alt="ubicaion">
+      </a>
+    </nav>
+  </div>
+  <div class="header__zona-usuario">
+
+    <a id="btnMostrar" class="header__ruta-usuario">
+      <img src="../icons/usuario.png" alt="usuario">
+    </a>
+    <%if (token) { %>
+      <div id="ventana" class="popup">
+        <!-- <ul class=""> -->
+        <ul>
+          <li><a href="#">Ver Perfil</a></li>
+          <li><a href="/logout">Cerrar Sesión</a></li>
+        </ul>
+      </div>
+      <% } else { %>
+        <div id="ventana" class="popup">
+          <ul>
+            <li><a href="/register">Registrarse</a></li>
+            <li><a href="/login">Iniciar Sesión</a></li>
+          </ul>
+        </div>
+        <% } %>
+
+          <a class="header__ruta-usuario" href="/carrito">
+            <img src="../icons/carrito.png" alt="carrito">
+          </a>
+  </div>
+
+  <script src="../js/header.js"></script>
+</header>

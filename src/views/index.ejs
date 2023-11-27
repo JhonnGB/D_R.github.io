@@ -1,0 +1,115 @@
+<%- include("partials/head", {tituloWeb: 'Inicio' }) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('partials/custom-header') %>
+
+<script>
+  function scrollToSection(sectionId) {
+    var section = document.getElementById(sectionId);
+    if (section) {
+      section.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest'
+      });
+    }
+  }
+</script>
+<script src="/js/msgs.js" defer></script>
+<script src="/js/carrusel.js" defer></script>
+
+<!-- mensajes exitoso -->
+<% if (successMessage && successMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-success">
+        <p><%= successMessage[0] %></p>
+    </div>
+<% } %>
+
+<!-- mensajes error -->
+<% if (errorsMessage && errorsMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-error">
+        <p><%= errorsMessage[0] %></p>
+    </div>
+<% } %>
+
+<!-- Carrucel -->
+<div class="carrusel-inicio__contenedor">
+
+  <div class="carrusel-flecha carrusel-flecha-izquierda">&#9665;</div>
+
+  <div class="carrusel-inicio__div">
+    <div class="carrusel-imagen">
+      <img src="img/imagen_carrucel.png" alt="anuncio">
+    </div>
+    <div class="carrusel-imagen">
+      <img src="img/publicidad.png" alt="publicidad">
+    </div>
+    <div class="carrusel-imagen">
+      <img src="img/publicidad2.jpg" alt="publicidad">
+    </div>
+  </div>
+
+  <div class="carrusel-flecha carrusel-flecha-derecha">&#9655;</div>
+
+  <ul class="carrusel__botones">
+    <div class="carrusel__btn btn-activo"></div>
+    <div class="carrusel__btn"></div>
+    <div class="carrusel__btn"></div>
+  </ul>
+</div>
+
+
+<!-- Categorias -->
+<main id="seccionMenu">
+    <h1 class="categorias-titulo">Estas Son Nuestras Categorias</h1>
+    <!-- Contenedor Categorias -->
+    <div class="categorias-container">
+        <!-- Categorias -->
+        <% categories.forEach(function(category) { %>
+            <div class="categorias-container__categoria">
+                <h2 class="categorias-container__nombre"><%=category.category.toUpperCase()%></h2>
+                <img class="categorias-container__img" src="<%=category.cover%>" alt="categoria Hamburguesa">
+                <p class="categorias-container__descripcion">Más de <%=category.numProducts%> variaciones</p>
+                <a class="categorias-container__boton cat" href="/productos/<%=category.category%>">
+                    VER
+                </a>
+            </div>
+        <% }); %>
+    </div>
+</main>
+
+<!-- FORMULARIO DE CONTACTO -->
+<div class="pagina-separador"></div>
+
+<fieldset class="formulario">
+  <h2 class="formulario__subtitulo">Comunicate Con Nosotros</h2>
+
+  <div class="formulario__container">
+    <form action="/enviarcorreo" method="post">
+        <input class="formulario__datos" type="text" placeholder="Nombres" name="nombres" required>
+        <input class="formulario__datos" type="text" placeholder="Apellidos" name="apellidos" required>
+        <input class="formulario__datos" type="tel" placeholder="Telefono celular" name="numCel" required>
+        <input class="formulario__datos" type="email" placeholder="Correo electronico" name="email" required>
+        <textarea class="formulario__mensaje" placeholder="Dejanos tu mensaje aquí" name="mensaje" required></textarea>
+
+        <div class="formulario__tyc">
+          <input type="checkbox" required> Acepto los <a href="/nosotros">Terminos y Condiciones</a>
+        </div>
+        
+        <div class="formulario__boton">
+          <button type="submit" class="formulario__boton__estilos">Enviar</button>
+        </div>
+    </form>
+    
+    <div class="formulario__enunciado">
+        <p>Queremos darte el mejor servicio, es por eso que esperamos tu mensaje con gran aprecio.
+          <br><br>¿Alguna duda, peticion, sugerencia, inconformidad o queja? puedes enviarnos un mensaje.</p>
+    </div> 
+  </div>
+</fieldset>
+
+<!-- Footer personalizado -->
+<%- include('partials/footer') %>
+
+<!-- Footer -->
+<%- include('partials/custom-footer') %>

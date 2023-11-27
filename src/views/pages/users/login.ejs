@@ -1,0 +1,57 @@
+<%- include('../../partials/head', {tituloWeb: 'Iniciar Sesión'}) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('../../partials/custom-header') %>
+
+<!-- Scripts para mensajes emergentes -->
+<script src="/js/msgs.js" defer></script>
+
+<!-- mensajes exitoso -->
+<% if (successMessage && successMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-success">
+        <p><%= successMessage[0] %></p>
+    </div>
+<% } %>
+
+<!-- mensajes error -->
+<% if (errorsMessage && errorsMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-error">
+        <p><%= errorsMessage[0] %></p>
+    </div>
+<% } %>
+
+<main class="iniciar-secion">
+
+    <h2 class="iniciar-secion__subtitulo">Iniciar Sesión</h2>
+
+    <form action="/login" method="POST">
+        <div class="iniciar-secion__formulario">
+            <label for="">Correo Electronico</label>
+            <input class="iniciar-secion__input" type="email" name="email" placeholder="correo@email.com" required autofocus>
+
+            <label for="">Contraseña</label>
+            <input class="iniciar-secion__input" type="password" name="password" placeholder="********" required>
+        </div>
+
+        <% if (errorsText && errorsText.length > 0) { %>
+            <p class="error error-hidden"><%= errorsText[0].toUpperCase() %></p>
+        <% } %>
+
+        <div class="iniciar-secion__tyc">
+            <input type="checkbox" required> Acepto los 
+            <a href="/nosotros">Terminos y Condiciones</a>
+        </div>
+
+        <button type="submit" class="iniciar-secion__boton">Iniciar Sesión</button>
+    </form>
+
+    <div class="iniciar-secion__registro-login">
+        <p>¿No te has</p><a href="/register">Registrado?</a>
+    </div>
+</main>
+
+<!-- Footer Personalizado -->
+<%- include('../../partials/custom-footer') %>
+
+<!-- Footer -->
+<%- include('../../partials/footer') %>

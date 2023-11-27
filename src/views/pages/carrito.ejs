@@ -1,0 +1,224 @@
+<%- include("../partials/head", {tituloWeb: 'Carrito' }) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('../partials/custom-header') %>
+
+<script src="/js/msgs.js" defer></script>
+
+<!-- mensajes exitoso -->
+<% if (successMessage && successMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-success">
+        <p><%= successMessage[0] %></p>
+    </div>
+<% } %>
+
+<!-- mensajes error -->
+<% if (errorsMessage && errorsMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-error">
+        <p><%= errorsMessage[0] %></p>
+    </div>
+<% } %>
+
+<% let totalProducto = 0 %>
+<% let totalSum = 0 %>
+
+<% if (productosAñadidos.length > 0) { %>
+    <!-- Titulo -->
+    <h1 class="carrito-titulo">Tu Carrito de Compras</h1>
+
+    <!-- Carrito de compras -->
+    <main>
+        <!-- subtitulos -->
+        <div class="productos-añadidos__subtitulos">
+            <span>Productos</span>
+            <span>Precio U.</span>
+            <span>Cantidad</span>
+            <span>TOTAL</span>
+        </div>
+
+        <!-- Contenedor productos añadidos -->
+        <div class="productos-añadidos__contenedor">
+
+            <!-- Productos añadidos -->
+            <% productosAñadidos.forEach(function(producto) { %>
+                <div class="productos-añadidos__producto">
+                    <!-- Descripcion producto -->
+                    <div class="productos-añadidos__producto-info">
+                        <h3><%= producto.name %></h3>
+                        <p><%= producto.description %></p>
+
+                        <!-- Adicionales -->
+                        <div class="productos-añadidos__producto-add">
+                            <div>
+                                <b>ADD.</b>
+                                <b>no.</b>
+                            </div>
+                            <div>
+                                <b>OBS.</b>
+                                <b>no.</b>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Precio, cantidad, total -->
+                    <p class="productos-añadidos__valores">$ <%= producto.precio.toLocaleString('es-ES') %></p>
+          
+                    <% const cantidadProducto = datosProductos.find(prod => prod.productoId.toString() === producto._id.toString()); %>
+                    <% if (cantidadProducto) { %>
+                        <p class="productos-añadidos__valores"><%= cantidadProducto.cantidadProducto %></p>
+
+                        <!-- Calculo del precio total de un producto segun la cantidad de estos -->
+                        <% let precioUnitario = 0 %>
+                        <% precioUnitario = cantidadProducto.cantidadProducto * producto.precio %>
+                        <p class="productos-añadidos__valores">$ <%= precioUnitario.toLocaleString('es-ES') %></p>
+
+                        <!-- Acomulación de Totales Unitarios -->
+                        <% totalProducto = cantidadProducto.cantidadProducto * producto.precio; %>
+                        <% totalSum += totalProducto; %> 
+                        
+                    <% } else { %>
+                        <p class="productos-añadidos__valores">No</p> 
+                    <% } %>
+                        
+                </div>
+                
+                <!-- funciones editar, eliminar -->
+                <div class="productos-añadidos__funciones">
+                    <a href="#">
+                        <img class="productos-añadidos__funciones-aditar" src="../icons/editar.png" alt="editar">
+                    </a>
+                    <a href="/carrito/borrar/<%= producto._id %>">
+                        <img class="productos-añadidos__funciones-eliminar" src="../icons/borrar.png" alt="eliminar">
+                    </a>
+                </div>
+            <% }); %>
+        </div>
+    </main>
+
+    <!-- Categorias y Zona de pago -->
+    <section class="container-end">
+        <div>
+            <div class="container-end__enunciado">
+                <p>¿DESEAS AGREGAR <br> ALGO MAS?</p>
+            </div>
+
+            <!-- Categorias -->
+            <nav class="container-end__categorias">
+                <% categorias.forEach(function(categoria) { %>
+                    <a href="/productos/<%=categoria.category%>">
+                        <%= categoria.category.toUpperCase() %> 
+                        <img src="<%= categoria.icono %>" alt="icono">
+                    </a>
+                <% }); %>
+            
+                <a href="/">BEBIDAS
+                    <img src="../icons/barra_navegacion_categorias/refresco.png" alt="Bebidas">
+                </a>
+            </nav>
+        </div>
+
+        <!-- Zona de pago -->
+        <div>
+            <div class="container-end__zona-pago">
+                <p>Subtotal:</p>
+                <p>$ <%= totalSum.toLocaleString('es-ES') %></p>
+                <a class="container-end__boton-pago" href="/realizar-pago">Realizar Pago</a>
+            </div>
+        </div>
+    </section>
+<% } else { %>
+    <div class="container__enunciado-opcional">
+        <h1>¿Aun no has añadido un producto <br> al carrito de compra?</h1>
+        <p>Conoce Nuestro Manú</p>
+
+        <nav class="container__navegador-opcional">
+            <% categorias.forEach(function(categoria) { %>
+                <a href="/productos/<%=categoria.category%>">
+                    <%= categoria.category.toUpperCase() %> 
+                    <img src="<%= categoria.icono %>" alt="icono">
+                </a>
+            <% }); %>
+        
+            <a href="/">BEBIDAS
+                <img src="../icons/barra_navegacion_categorias/refresco.png" alt="Bebidas">
+            </a>
+        </nav>
+    </div>
+<% } %>
+
+<% if (datosPedido.length > 0) { %>
+    <h2 class="pedidos-realizados__titulo">Pedido Recientes</h2>
+
+    <aside class="pedidos-realizados__contenedor">
+        <% datosPedido.forEach(function(pedido, index) { %>
+            <!-- resumen de pedido -->
+            <div class="pedidos-realizados__resumen">
+    
+                <!-- fecha de realizacion del pedido -->
+                <span><%= pedido.createdAt.toISOString().split('T')[0] %></span>
+    
+                <!-- primeros productos -->
+                <% pedido.productosPedidos.forEach((producto, i) => { %>
+                    <span><%= producto.nombreProd %></span>
+                    <!-- Agregar coma si no es el último producto del pedido -->
+                    <% if (i < pedido.productosPedidos.length - 1) { %>
+                        <span class="pedidos__span-coma">, </span>
+                    <% } %>
+                    <% i++ %>
+                <% }); %>
+    
+                <!-- Utilizar un índice único para cada botón -->
+                <button class="mostrarDetallesPedido" data-index="<%= index %>">...ver más</button>
+    
+            </div>
+
+            <!-- fondo difuminado al abrir ventana emergente -->
+            <div class="fondo-difuminado"></div>
+            
+            <!-- pedido en detalle -->
+            <div class="detalles-pedido__ventana">
+                <h3>Pedido Realizado</h3>
+
+                <strong>Fecha: </strong>
+                <span><%= pedido.createdAt.toISOString().split('T')[0] %></span><br>
+                
+                <span>Cliente </span>
+                <span><%= pedido.cliente %>,</span><br>
+
+                <span>Identificación: </span>
+                <span><%= pedido.numIdentidad %></span>
+                
+                <% pedido.productosPedidos.forEach((producto) => { %>
+                    <div class="detalles-pedido__productos">
+                        <span><%= producto.nombreProd %></span>
+                        <span>$<%= producto.precioProd.toLocaleString('es-Es') %></span>
+                        <span>x<%= producto.cantidadProd %></span>
+                        <% let totalProd = 0; %>
+                        <% totalProd = producto.precioProd*producto.cantidadProd %>
+                        <span>=</span>
+                        <span>$<%= totalProd.toLocaleString('es-Es') %></span>
+                    </div>
+                <% }); %>
+                
+                <div class="detalles-pedido__total">
+                    <strong>Total: </strong>
+                    <b>$<%= pedido.total.toLocaleString('es-Es') %></b>
+                </div>
+                <br>
+                <span>Forma entrega: <%= pedido.formaEntrega %></span><br>
+                <span>Dirección: <%= pedido.direccionUsuario.trim() === '' ? 'N/A' : pedido.direccionUsuario %></span>
+            </div>
+        <% }); %>
+    </aside>
+    
+    
+<% } %>
+
+
+<script src="../js/carrito.js"></script>
+
+
+<!-- Footer personalizado -->
+<%- include('../partials/custom-footer') %>
+
+<!-- Footer -->
+<%- include('../partials/footer') %>

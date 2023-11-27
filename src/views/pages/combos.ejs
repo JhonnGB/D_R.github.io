@@ -1,0 +1,76 @@
+<%- include("../partials/head", {tituloWeb: 'Combos' }) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('../partials/custom-header') %>
+
+<script src="/js/msgs.js" defer></script>
+
+<!-- mensajes exitoso -->
+<% if (successMessage && successMessage.length > 0) { %>
+    <div id="msgsPop-up" class="msg-success">
+        <p><%= successMessage[0] %></p>
+    </div>
+<% } %>
+
+<main class="combos">
+    <!-- BARRA DE CATEGORIAS -->
+    
+    <nav class="combos__nav">
+        <% groupsAndIcons.forEach(function(group) { %>
+            <a class="combos__nav-boton <%= selectedGroup === group.group ? 'combos__nav-active' : '' %>" href="/combos/<%= group.group %>">
+                <img src="<%= group.icono %>" alt="">
+            </a>
+        <% }); %>
+
+        <a class="combos__nav-boton" href="/combos/anuncio">
+            <img src="../icons/barra_combos/anuncio.png" alt="">
+        </a>
+    </nav>
+
+    <!-- COMBOS -->
+    <div class="combos__container">
+        <% if (currentUrl !== '/combos/anuncio') { %>
+            
+            <% let currentGroup = null; %>
+            
+            <% combos.forEach(function(combo) { %>
+                <!-- Verifica si el grupo ha cambiado -->
+                <% if (combo.group !== currentGroup) { %>
+                    <!-- Titulo Combos Amigos y Familia -->
+                    <div class="combos__titulo">
+                        <div class="combos__titulo-decoracion"></div>
+                        <h1 class="titulo-categoria__texto"><%= combo.group.toUpperCase() %></h1>
+                        <div class="combos__titulo-decoracion"></div>
+                    </div>
+                    <% currentGroup = combo.group; %>
+                <% } %>
+        
+                <div class="combos__producto">
+                    <img src="<%=combo.cover%>" alt="<%=combo.name%>">
+                    <div class="combos__info">
+                        <h3><%=combo.name%></h3>
+                        <p><%=combo.description%> <br><br> <%=combo.description%></p>
+                        <div class="combos__precio">
+                            <b>Precio:</b>
+                            <b>$ <%=combo.precio%></b>
+                        </div>
+                        <a class="combos__boton" href="/agregar">PIDELO YA!</a>
+                    </div>
+                </div>
+            <% }); %>
+        <% } %>
+
+        <% if (currentUrl === '/combos/anuncio') { %>
+            <div>
+                <img src="../img/imagen_carrucel.png" alt="carrusel">
+            </div>
+        <% } %>
+    </div>
+</main>
+
+    
+<!-- Footer personalizado -->
+<%- include('../partials/custom-footer') %>
+
+<!-- Footer -->
+<%- include('../partials/footer') %>
