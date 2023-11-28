@@ -1,0 +1,35 @@
+.header {
+  margin-bottom: 5%;
+  height: 110px;
+  display: grid;
+  grid-template-columns: 15% 70% 15%;
+  /* background: #cd212c; */
+  /* background: #fff; */
+  background: #fad8a6;
+}
+.header__logo-empresa {
+  margin: auto;
+}
+.header__logo-empresa img {
+  width: 50%;
+  border-radius: 8px;
+  /* box-shadow: 0 0 8px 1px #f1a100; */
+  box-shadow: 2px 3px 5px 2px #f2ca7c;
+  transition: all 0.3s;
+}
+.header__logo-empresa img:hover {
+  box-shadow: 0 0 10px 3px #f1a100;
+  border-radius: 14px;
+}
+.header__nombre-empresa {
+  margin: 30px auto; 
+  text-align: start; /*OPCIONAL */
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  word-spacing: 10px;
+  /* color: #fff; */
+  color: #ec3d48;
+  /* text-shadow: 4px 3px 8px #ffb829; */
+  text-shadow: 2px 3px 5px #ffb829;
+}

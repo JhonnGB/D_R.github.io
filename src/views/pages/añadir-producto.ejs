@@ -1,0 +1,103 @@
+<%- include('../partials/head', { tituloWeb: 'Añadir Producto' }) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('../partials/custom-header') %>
+
+<main class="añadir">
+    <!-- Producto Seleccionado -->
+    <div class="contenedor__añadir-producto">
+        <img src="<%=producto.cover%>" alt="<%=producto.name%>">
+        <div class="añadir__info">
+            <h2><%=producto.name%></h2>
+            <div class="añadir__info-precio">
+                <b>Precio:</b>
+                <b>$<%=producto.precio%></b>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orden del Producto -->
+    <div class="contenedor__añadir-orden">
+        <div class="añadir__descripcion">
+            <h3>DESCRIPCIÓN:</h3>
+            <P><%=producto.description%></P>
+        </div>
+
+        <div class="añadir__adicionesles">
+            <div class="añadir__adicionesles-barra">
+                <span>Adicionales</span>
+                <img src="../icons/flecha-desplegar.png" alt="">
+            </div>
+
+            <ul class="añadir__adicionesles-opciones">
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Papas a la francesas">
+                    <span>Papas a la francesas</span>
+                </li> 
+
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Porcion de queso">
+                    <span>Porcion de queso</span>
+                </li>
+
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Porcion palitos de Yuca">
+                    <span>Porcion palitos de Yuca</span>
+                </li>
+
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Salsa de la casa">
+                    <span>Salsa de la casa</span>
+                </li>
+
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Guacamole">
+                    <span>Guacamole</span>
+                </li>
+            </ul>
+        </div>
+            <!-- observaciones -->
+        <div class="añadir__adicionesles">
+            <div class="añadir__adicionesles-barra">
+                <span>Observacines</span>
+                <img src="../icons/flecha-desplegar.png" alt="">
+            </div>
+
+            <ul class="añadir__adicionesles-opciones">
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Salsas al lado">
+                    <span>Salsas al lado</span>
+                </li> 
+
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Sin cebolla">
+                    <span>Sin cebolla</span>
+                </li>
+
+                <li class="opcion-adicional">
+                    <input type="checkbox" value="Sin tomate">
+                    <span>Sin tomate</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main> 
+
+<!-- Contador Cantidad de Productos -->
+<div class="contador-añadir__barra">
+    <div class="container__contador">
+        <span>Cantidad:</span>
+        <button class="contador-añadir__controles restar">-</button>
+        <input type="number" min="0" class="cantidad-producto" value="1">
+        <button class="contador-añadir__controles sumar">+</button>
+    </div>
+    <!-- boton añadir -->
+    <div class="boton__añadir-producto">
+        <a href="#" class="añadir-producto" id="<%= producto._id %>">Añadir</a>
+    </div>
+</div>
+
+
+<script src="../js/añadir.js"></script>
+<!-- Footer personalizado -->
+<%- include('../partials/footer') %>

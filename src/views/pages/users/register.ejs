@@ -1,0 +1,61 @@
+<%- include('../../partials/head', {tituloWeb: 'Registrarse'}) %>
+
+<!-- Encabezado perosnalizado -->
+<%- include('../../partials/custom-header') %>
+
+<!-- Scripts para calendario  -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<main class="registrarse">
+    <h2 class="registrarse__subtitulo">Registrarse</h2>
+    
+    <form action="/register" method="POST">
+        <div class="registrarse__formulario">
+            <!-- <label for="user" class="only">User</label> -->
+            <input type="text" name="name" placeholder="Nombres" required autofocus value="<%= typeof name !== 'undefined' ? name : '' %>">
+
+            <input type="text" name="lastName" placeholder="Apellidos" required value="<%= typeof lastName !== 'undefined' ? lastName : '' %>">
+
+            <input type="tel" name="cel" placeholder="Numero Celular" required value="<%= typeof cel !== 'undefined' ? cel : '' %>">
+
+            <!-- <input type="date" placeholder="Fecha Nacimiento" required> -->
+            <input type="text" name="birthdate" id="fechaCumpleanos" placeholder="Fecha de Cumpleaños" required value="<%= typeof birthdate !== 'undefined' ? birthdate : '' %>">
+
+            <!-- <label for="email" class="only">Email</label> -->
+            <input type="email" name="email" class="registrarse__correo" placeholder="Correo Electronico" required value="<%= typeof email !== 'undefined' ? email : '' %>">
+
+            <!-- <label for="password" class="only">Password</label> -->
+            <input type="password" name="password" placeholder="Contraseña" required>
+            <input type="password" name="confirm_password" placeholder="Confirmar Contraseña" required>
+        </div>
+
+        <% if (errorsText && errorsText.length > 0) { %>
+            <% errorsText.forEach(function(error) { %>
+                <p class="error error-hidden"><%= error.toUpperCase() %></p>
+            <% }); %>
+        <% } %>
+
+        <div class="registrarse__tyc">
+            <input type="checkbox" required> Acepto los 
+            <a href="/nosotros">Terminos y Condiciones</a>
+        </div>
+        
+        <button type="submit" class="registrarse__boton">REGISTRARSE</button>
+    </form>
+
+    <div class="iniciar-secion__registro-login">
+        <p>Ya estas</p><a href="/login">Registrado?</a>
+    </div>
+</main>
+
+
+<!-- Scripts de register (calendario) -->
+<script src="/js/register.js"></script>
+
+<!-- Footer Personalizado -->
+<%- include('../../partials/custom-footer') %>
+
+<!-- Footer -->
+<%- include('../../partials/footer') %>

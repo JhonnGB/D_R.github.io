@@ -1,0 +1,183 @@
+<%- include("../partials/head", {tituloWeb: 'Pago' }) %>
+
+<!-- Estilos para encabezado de pago -->
+<link rel="stylesheet" href="../css/header-pago.css" type="text/css">
+
+<!-- Encabezado perosnalizado (solo para pagina de pago) -->
+<header class="header">
+    <div class="header__logo-empresa">
+    <a href="/nosotros">
+        <img src="../icons/logoempresa.png" alt="Logo empresa">
+    </a>
+    </div>
+
+    <div>
+    <h1 class="header__nombre-empresa">DELICIAS RÁPIDAS</h1>
+    </div>
+
+</header>
+
+    <script src="/js/pago.js" defer></script>
+
+    <!-- Redirigir a Carrito -->
+    <a href="/carrito" class="pago__regresar">
+        <img src="/icons/regresar.png" alt="Retornar" />
+        <span>Regresar al Carrito</span>
+    </a>
+
+    <!-- Titulo pagina -->
+    <h1 class="pago__titulo-pagina">Realizar Compra</h1>
+
+    <!--  -->
+    <form action="/ejecucion-pago" method="POST">
+        <div class="pago__datos-usuario">
+            <legend class="pago__subtitulos">Datos del Cliente</legend>
+
+            <div class="pago__contenedor-datos">
+                <label for="name">
+                    <span>Nombres</span>
+                    <input type="text" name="nombres" value="<%= userData.name %> <%= userData.lastName %>"
+                        required />
+                </label>
+
+                <label for="email">
+                    <span>Correo electronico</span>
+                    <input type="email" name="email" value="<%= userData.email %>" required />
+                </label>
+
+                <label for="cel">
+                    <span>Número celular</span>
+                    <input type="tel" name="numCel" value="<%= userData.cel %>" required />
+                </label>
+
+                <label for="numeroIdentidad">
+                    <span>Cedula / Identificacion</span>
+                    <input type="text" id="identificacion" name="numIdentidad"
+                        placeholder="Ingrese su número de identificación" value="" required />
+                </label>
+            </div>
+        </div>
+
+        <!-- Datos del envio -->
+        <div class="pago__datos-envio">
+            <legend class="pago__subtitulos">Datos del Envio</legend>
+
+            <div class="pago__contenedor-datos">
+                <label for="formaEntrega">
+                    <span>Forma de entrega</span>
+                    <select id="formaEntrega" name="formaEntrega" required>
+                        <option value="" disabled selected>Elige una opción</option>
+                        <option value="recoger al local">Recoger al local</option>
+                        <option value="domicilio">Domicilio</option>
+                    </select>
+                </label>
+
+                <label for="localDireccion">
+                    <span>Local</span>
+                    <select id="localDireccion" name="localDireccion" required>
+                        <option value="" disabled selected>Elige el local</option>
+                        <option value="Cra. 2A #80-100, - Av Guabinal">
+                            Cra. 2A #80-100, - Av Guabinal
+                        </option>
+                        <option value="Calle 63 No. 5-30 - Av Mirolindo">
+                            Calle 63 No. 5-30 - Av Mirolindo
+                        </option>
+                    </select>
+                </label>
+
+                <label for="personaRecibe">
+                    <span>Persona que recibe el pedido</span>
+                    <input type="text" id="personaRecibe" name="personaRecibe"
+                        placeholder="<%= userData.name %> <%= userData.lastName %>" required />
+                </label>
+
+                <label for="infoAdicional" id="infoAdicionalLabel">
+                    <span>Información Adicional (para entrega)</span>
+                    <input type="text" id="infoAdicional" name="infoAdicional"
+                        placeholder=" torre 4, piso 5 / segundo timbre" />
+                </label>
+
+                <label for="direccionEnvio" id="direccionEnvioLabel">
+                    <span>Direccion del envio</span>
+                    <input type="text" id="direccionEnvio" name="direccionUsuario" value="" required />
+                </label>
+            </div>
+        </div>
+        <!-- Datos de pago -->
+        <div class="contenedor__hacer-pedido">
+            <% let totalSum=0 %>
+            <% let precioPorCantidad=0 %>
+                <!-- Resumen del pedido -->
+                <div class="pago__resumen-compra">
+                    <legend class="pago__subtitulos-pedido">Resumen del Pedido</legend>
+
+                    <!-- productos -->
+                    <% productosAñadidos.forEach(function(producto, index) { %>
+                        <div class="pago__producto-pedido">
+                            <img src="<%= producto.cover %>" alt="imagen-producto" />
+                            <div>
+                                <input type="hidden" name="nombreProd" value="<%= producto.name %>" />
+                                <h4>
+                                    <%= producto.name %>
+                                </h4>
+                                <% let precioProducto=producto.precio.toLocaleString('es-ES'); %>
+                                    <input type="hidden" name="precioProd" value="<%= producto.precio %>" />
+                                    <span>$ <%= precioProducto %></span>
+                            </div>
+                            <div class="producto-pedido__cantidad">
+                                <% const cantidadProducto=datosProductos.find(prod=>
+                                    prod.productoId.toString() === producto._id.toString()
+                                    ); %>
+                                    <input type="hidden" name="cantidadProd" value="<%= cantidadProducto.cantidadProducto %>" />
+                                    <span>x<%= cantidadProducto.cantidadProducto %></span>
+                            </div>
+                            <% precioPorCantidad = Number(producto.precio * cantidadProducto.cantidadProducto ); %>
+                            <% totalSum +=Number(precioPorCantidad); %>
+                        </div>
+                        <% }) %>
+
+                            <!-- calculo subtotal y total -->
+                            <div class="pago__calculos">
+                                <div class="pago__calculos-text">
+                                    <span>Subtotal:</span>
+                                    <span>Domicilio:</span>
+                                    <div class="pago__calculos-linea"></div>
+                                    <span>Total:</span>
+                                </div>
+                                <div class="pago__calculos-text">
+                                    <span>$ <%= totalSum.toLocaleString('es-Es') %></span>
+                                    <span>$00</span>
+                                    <div class="pago__calculos-linea"></div>
+                                    <input type="hidden" name="totalSum" value="<%= totalSum %>" />
+                                    <span>$ <%= totalSum.toLocaleString('es-Es') %></span>
+                                </div>
+                            </div>
+                </div>
+                <!-- Datos de pago (formulario) -->
+                <div class="contenedor__formaPago">
+                    <div class="contador__formaPago-datos">
+                        <legend class="pago__subtitulos">Datos de Pago</legend>
+
+                        <div class="forma-pago__datos">
+                            <label for="formaPago">
+                                <span>Forma de Pago</span>
+                                <select name="formaPago" id="formaPago" required>
+                                    <option value="" disabled selected>Elige una opcion</option>
+                                    <option value="efectivo">Efectivo</option>
+                                </select>
+                            </label>
+
+                            <label for="">
+                                <span>Necesitas cambio? ¿Con cuanto pagas?</span>
+                                <input type="text" name="solicitudCambio" placeholder="$56.000" />
+                            </label>
+                        </div>
+                    </div>
+                    <!-- Boton Realizar Compra -->
+                    <button type="submit" id="enviarFormulario" class="button__hacer-compra">HACER COMPRA</button>
+                </div>
+        </div>
+    </form>
+
+<!-- Footer -->
+<%- include('../partials/footer') %>
